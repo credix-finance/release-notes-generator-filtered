@@ -1,5 +1,5 @@
 const {format} = require('url');
-const {find, merge, isMatch} = require('lodash');
+const {find, merge} = require('lodash');
 const getStream = require('get-stream');
 const intoStream = require('into-stream');
 const parser = require('conventional-commits-parser').sync;
@@ -9,6 +9,7 @@ const readPkgUp = require('read-pkg-up');
 const debug = require('debug')('semantic-release:release-notes-generator');
 const loadChangelogConfig = require('./lib/load-changelog-config.js');
 const HOSTS_CONFIG = require('./lib/hosts-config.js');
+const micromatch = require('micromatch');
 
 /**
  * Generate the changelog for all the commits in `options.commits`.
@@ -56,7 +57,7 @@ async function generateNotes(pluginConfig, context) {
         ...parser(rawCommit.message, {referenceActions, issuePrefixes, ...parserOpts}),
       }))
       .filter((parseResults) => {
-        return isMatch(parseResults.scope, scopePattern);
+        return scopePattern ? micromatch.isMatch(parseResults.scope, scopePattern) : true;
       })
   );
   const previousTag = lastRelease.gitTag || lastRelease.gitHead;
