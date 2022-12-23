@@ -1,5 +1,5 @@
 {
-  "name": "@semantic-release/release-notes-generator",
+  "name": "@credix/release-notes-generator-filtered",
   "description": "semantic-release plugin to generate changelog content with conventional-changelog",
   "version": "1.0.1",
   "author": "Pierre Vanduynslager (https://twitter.com/@pvdlg_)",
@@ -84,7 +84,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/semantic-release/release-notes-generator.git"
+    "url": "https://github.com/credix-finance/release-notes-generator-filtered.git"
   },
   "scripts": {
     "lint": "xo",
