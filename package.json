@@ -1,7 +1,7 @@
 {
   "name": "@semantic-release/release-notes-generator",
   "description": "semantic-release plugin to generate changelog content with conventional-changelog",
-  "version": "0.0.0-development",
+  "version": "1.0.0",
   "author": "Pierre Vanduynslager (https://twitter.com/@pvdlg_)",
   "bugs": {
     "url": "https://github.com/semantic-release/release-notes-generator/issues"

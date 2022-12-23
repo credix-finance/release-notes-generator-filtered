@@ -1,5 +1,5 @@
 const {format} = require('url');
-const {find, merge} = require('lodash');
+const {find, merge, isMatch} = require('lodash');
 const getStream = require('get-stream');
 const intoStream = require('into-stream');
 const parser = require('conventional-commits-parser').sync;
@@ -29,7 +29,7 @@ const HOSTS_CONFIG = require('./lib/hosts-config.js');
 async function generateNotes(pluginConfig, context) {
   const {commits, lastRelease, nextRelease, options, cwd} = context;
   const repositoryUrl = options.repositoryUrl.replace(/\.git$/i, '');
-  const {parserOpts, writerOpts} = await loadChangelogConfig(pluginConfig, context);
+  const {parserOpts, writerOpts, scopePattern} = await loadChangelogConfig(pluginConfig, context);
 
   const [match, auth, host, path] = /^(?!.+:\/\/)(?:(?<auth>.*)@)?(?<host>.*?):(?<path>.*)$/.exec(repositoryUrl) || [];
   let {hostname, port, pathname, protocol} = new URL(
@@ -55,6 +55,9 @@ async function generateNotes(pluginConfig, context) {
         ...rawCommit,
         ...parser(rawCommit.message, {referenceActions, issuePrefixes, ...parserOpts}),
       }))
+      .filter((parseResults) => {
+        return isMatch(parseResults.scope, scopePattern);
+      })
   );
   const previousTag = lastRelease.gitTag || lastRelease.gitHead;
   const currentTag = nextRelease.gitTag || nextRelease.gitHead;

@@ -16,6 +16,19 @@ const repositoryUrl = `${host}/${owner}/${repository}`;
 const lastRelease = {gitTag: 'v1.0.0'};
 const nextRelease = {gitTag: 'v2.0.0', version: '2.0.0'};
 
+test('Remove commits with scope invalid', async (t) => {
+  const commits = [
+    {hash: '111', message: 'fix(invalid): First fix'},
+    {hash: '222', message: 'feat(scope2): Second feature'},
+  ];
+  const changelog = await generateNotes(
+    {preset: 'conventionalcommits', scopePattern: '!*invalid*'},
+    {cwd, options: {repositoryUrl}, lastRelease, nextRelease, commits}
+  );
+
+  t.notRegex(changelog, new RegExp(escape('* **invalid:**')));
+});
+
 test('Use "conventional-changelog-angular" by default', async (t) => {
   const commits = [
     {hash: '111', message: 'fix(scope1): First fix'},
