@@ -1,5 +1,5 @@
 const {format} = require('url');
-const {find, merge} = require('lodash');
+const {find, merge, isString} = require('lodash');
 const getStream = require('get-stream');
 const intoStream = require('into-stream');
 const parser = require('conventional-commits-parser').sync;
@@ -57,7 +57,11 @@ async function generateNotes(pluginConfig, context) {
         ...parser(rawCommit.message, {referenceActions, issuePrefixes, ...parserOpts}),
       }))
       .filter((parseResults) => {
-        return scopePattern ? micromatch.isMatch(parseResults.scope, scopePattern) : true;
+        if (parseResults && isString(parseResults.scope)) {
+          return scopePattern ? micromatch.isMatch(parseResults.scope, scopePattern) : true;
+        }
+
+        return true;
       })
   );
   const previousTag = lastRelease.gitTag || lastRelease.gitHead;

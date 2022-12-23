@@ -1,7 +1,7 @@
 {
   "name": "@credix/release-notes-generator-filtered",
   "description": "semantic-release plugin to generate changelog content with conventional-changelog",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Pierre Vanduynslager (https://twitter.com/@pvdlg_)",
   "bugs": {
     "url": "https://github.com/semantic-release/release-notes-generator/issues"
